@@ -42,10 +42,27 @@ module.exports = {
                     },
                 ],
             },
+            {
+                test: /\.bin$/,
+                exclude: /node_modules/,
+                use: [
+                  {
+                    loader: 'url-loader',
+                     options: {
+                       encoding: false,
+                       mimetype: false,
+                       generator: (content) => {
+                         return content;
+                       }
+                     },
+                   },
+                 ],
+              }
         ],
     },
     resolve: {
         alias: {
+            assets$: path.resolve(__dirname, 'src/components/assets'),
             lights$: path.resolve(__dirname, 'src/components/lights'),
             objects$: path.resolve(__dirname, 'src/components/objects'),
             scenes$: path.resolve(__dirname, 'src/components/scenes'),
