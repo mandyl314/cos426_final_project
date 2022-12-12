@@ -8,10 +8,10 @@
  */
 import { WebGLRenderer, PerspectiveCamera, Vector3 } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-import { TrainScene } from 'scenes';
+import { CharacterScene } from 'scenes';
 
 // Initialize core ThreeJS components
-const scene = new TrainScene();
+const scene = new CharacterScene();
 const camera = new PerspectiveCamera();
 const renderer = new WebGLRenderer({ antialias: true });
 
