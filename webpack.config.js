@@ -27,7 +27,7 @@ module.exports = {
                 exclude: path.resolve(__dirname, './node_modules/'),
                 type: 'asset/resource',
                 generator: {
-                    filename: 'assest/[path][name][ext][query]'
+                  filename: 'assets/[path][name][ext][query]'
                 }
             },
             {
@@ -49,7 +49,6 @@ module.exports = {
     },
     resolve: {
         alias: {
-            assets$: path.resolve(__dirname, 'src/components/assets'),
             lights$: path.resolve(__dirname, 'src/components/lights'),
             objects$: path.resolve(__dirname, 'src/components/objects'),
             scenes$: path.resolve(__dirname, 'src/components/scenes'),
