@@ -12,11 +12,16 @@ import { SeedScene } from 'scenes';
 
 // Initialize core ThreeJS components
 const scene = new SeedScene();
-const camera = new PerspectiveCamera();
+const camera = new PerspectiveCamera(
+    70,
+    window.innerWidth / window.innerHeight,
+    0.1,
+    200
+);
 const renderer = new WebGLRenderer({ antialias: true });
 
 // Set up camera
-camera.position.set(6, 3, -10);
+camera.position.set(0, 0, -10);
 camera.lookAt(new Vector3(0, 0, 0));
 
 // Set up renderer, canvas, and minor CSS adjustments
@@ -35,9 +40,16 @@ controls.minDistance = 4;
 controls.maxDistance = 16;
 controls.update();
 
+window.addEventListener("keydown", (e) => {
+    const key = e.key;
+    scene.move(key);
+});
+
 // Render loop
 const onAnimationFrameHandler = (timeStamp) => {
     controls.update();
+    //camera.position.z = timeStamp / 700;
+
     renderer.render(scene, camera);
     scene.update && scene.update(timeStamp);
     window.requestAnimationFrame(onAnimationFrameHandler);

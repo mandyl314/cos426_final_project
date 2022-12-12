@@ -28,13 +28,32 @@ class SeedScene extends Scene {
         this.state.gui.add(this.state, 'rotationSpeed', -5, 5);
     }
 
+    move(key) {
+        if (key === "ArrowLeft") {
+            console.log('hi');
+            this.position.x += 2.0;
+        }
+        if (key === "ArrowRight") {
+            this.position.x -= 2.0;
+        }
+        if (key === "ArrowUp") {
+            this.position.y += 2.0;
+        }
+        if (key === "ArrowDown") {
+            this.position.y -= 2.0;
+        }
+    }
+
     addToUpdateList(object) {
         this.state.updateList.push(object);
     }
 
     update(timeStamp) {
         const { rotationSpeed, updateList } = this.state;
-        this.rotation.y = (rotationSpeed * timeStamp) / 10000;
+        //this.rotation.y = (rotationSpeed * timeStamp) / 10000;
+
+        // added
+        this.position.z = (rotationSpeed * timeStamp) / 1000;
 
         // Call update for each object in the updateList
         for (const obj of updateList) {
