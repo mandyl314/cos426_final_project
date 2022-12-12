@@ -1,1 +1,1 @@
-export { default as CharacterScene } from './CharacterScene.js';
+export { default as TrainScene } from './TrainScene.js';
