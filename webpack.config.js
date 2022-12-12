@@ -23,9 +23,12 @@ module.exports = {
                 exclude: path.resolve(__dirname, './node_modules/'),
             },
             {
-                test: /\.(jpe?g|png|gif|svg|tga|gltf|babylon|mtl|pcb|pcd|prwm|obj|mat|mp3|ogg)$/i,
-                use: 'file-loader',
+                test: /\.(jpe?g|png|gif|svg|tga|gltf|babylon|mtl|pcb|pcd|prwm|obj|mat|mp3|bin|ogg)$/i,
                 exclude: path.resolve(__dirname, './node_modules/'),
+                type: 'asset/resource',
+                generator: {
+                  filename: 'assets/[path][name][ext][query]'
+                }
             },
             {
                 test: /\.(vert|frag|glsl|shader|txt)$/i,
@@ -42,27 +45,10 @@ module.exports = {
                     },
                 ],
             },
-            {
-                test: /\.bin$/,
-                exclude: /node_modules/,
-                use: [
-                  {
-                    loader: 'url-loader',
-                     options: {
-                       encoding: false,
-                       mimetype: false,
-                       generator: (content) => {
-                         return content;
-                       }
-                     },
-                   },
-                 ],
-              }
         ],
     },
     resolve: {
         alias: {
-            assets$: path.resolve(__dirname, 'src/components/assets'),
             lights$: path.resolve(__dirname, 'src/components/lights'),
             objects$: path.resolve(__dirname, 'src/components/objects'),
             scenes$: path.resolve(__dirname, 'src/components/scenes'),

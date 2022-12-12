@@ -1,11 +1,14 @@
+// require('../objects/Train/scene.bin');
+
+// //Put your textures here
+// require('../objects/Train/baggagecar_Material_u1_v1_baseColor.png');
+
 import { Group } from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import MODEL from './train.gltf';
-import TEXTURE from './baggagecar_Material_u1_v1_baseColor.png';
-// import SCENE from './scene.bin';
 
 class Train extends Group {
-    constructor() {
+    constructor(posx, posy, posz, rotx, roty, rotz) {
         // Call parent Group() constructor
         super();
 
@@ -13,16 +16,12 @@ class Train extends Group {
         const loader = new GLTFLoader();
         this.name = 'train';
         loader.load(MODEL, (gltf) => {
+            gltf.scene.scale.set(1, 1, 1);
+            // ex. (9, 0, 20)
+            gltf.scene.position.set(posx, posy, posz);
+            gltf.scene.rotation.set(rotx, roty, rotz);
             this.add(gltf.scene);
         });
-
-        // using GLB file
-        // const loader = new GLTFLoader();
-        // loader.load(MODEL, function ( gltf ) {
-        //     this.add( gltf.scene );
-        // }, undefined, function ( error ) {
-        //     console.error( error );
-        // } );
     }
 }
 
