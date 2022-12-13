@@ -22,11 +22,11 @@ class TrainScene extends Scene {
         this.background = new Color(0x7ec0ee);
         
 
-        const train1 = new Train(9, 0, 20, 0, Math.PI/2, 0);
-        const train2 = new Train(0, 0, 20, 0, Math.PI/2, 0);
-        const train3 = new Train(-9, 0, 20,0, Math.PI/2, 0);
+        // const train1 = new Train(9, 0, 20, 0, Math.PI/2, 0);
+        // const train2 = new Train(0, 0, 20, 0, Math.PI/2, 0);
+        // const train3 = new Train(-9, 0, 20,0, Math.PI/2, 0);
         const basicLights = new BasicLights();
-        this.add(train1, train2, train3);
+        // this.add(train1, train2, train3);
         this.add(basicLights);
 
         const player = new Figure();
