@@ -85,6 +85,12 @@ window.addEventListener("keyup", (e) => {
     }
 });
 
+// move
+window.addEventListener("keydown", (e) => {
+    const key = e.key;
+    scene.move_fig(key);
+});
+
 // Spacebar to start game
 const startGame = () =>{
     console.log("startGame")

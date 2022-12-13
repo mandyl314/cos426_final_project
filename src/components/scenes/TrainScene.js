@@ -24,26 +24,37 @@ class TrainScene extends Scene {
         this.background = new Color(0x7ec0ee);
         
 
-        const train1 = new Train(9, 0, 40, 0, Math.PI/2, 0);
+        // const train1 = new Train(9, 0, 40, 0, Math.PI/2, 0);
         // const train2 = new Train(0, 0, 40, 0, Math.PI/2, 0);
         // const train3 = new Train(-9, 0, 40,0, Math.PI/2, 0);
         const basicLights = new BasicLights();
-        this.add(train1);
+        // this.add(train1);
         this.add(basicLights);
 
         const player = new Figure();
         this.add(player);
+        this.player = player;
 
-        const obstacle1 = new Obstacle();
-        obstacle1.set_position(1)
-        const obstacle2 = new Obstacle();
-        obstacle2.set_position(2)
-        const obstacle3 = new Obstacle();
-        obstacle3.set_position(3)
-        this.add(obstacle1, obstacle2, obstacle3);
+        const obstacle1 = new Obstacle(1);
+        const obstacle2 = new Obstacle(2);
+        const obstacle3 = new Obstacle(3);
+        this.add(obstacle1, obstacle2);
+        this.obstacles =[];
+        this.obstacles.push(obstacle1, obstacle2)
 
         // Populate GUI
         this.state.gui.add(this.state, 'volume', 0, 10);
+    }
+
+    move_fig(key) {
+        this.player.move_fig(key, this.obstacles);
+    }
+
+    update() {
+        // Call update for each object obstacles
+        for (const obj of this.obstacles) {
+            obj.update(this.player);
+        }
     }
 }
 
