@@ -2,9 +2,11 @@ import * as THREE from 'three';
 import { Group } from 'three';
 
 // Reference: https://tympanus.net/codrops/2021/10/04/creating-3d-characters-in-three-js/
-class Figure extends Group{
+class Figure extends Group{ 
     constructor() {
         super();
+        this.gameState = true;      // a variable used to determine game state
+
         // Create body as a box
         // Create a material with a white color
         const material = new THREE.MeshLambertMaterial({ color: 0xc29a97 });
@@ -31,14 +33,16 @@ class Figure extends Group{
         }
 
         this.track = 2;
+
+        this.position.set(0, 0, -10);
     }
     move_fig(key, obstacles) {
         if (key === "ArrowLeft") {
-            this.position.x += 10.0;
+            this.position.x += 3.0;
             this.track = this.track - 1;
         }
         if (key === "ArrowRight" ) {
-            this.position.x -= 10.0;
+            this.position.x -= 3.0;
             this.track = this.track + 1;
         }
 
@@ -55,6 +59,7 @@ class Figure extends Group{
     }
 
     death(obstacle){
+        this.gameState = false;
         let obs_pos = obstacle.position.clone()
         this.rotation.x = -Math.PI / 2;
         this.position.z = obs_pos.z - obstacle.width_offset - this.height_offset;

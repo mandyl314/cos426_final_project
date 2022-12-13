@@ -16,6 +16,7 @@ class TrainScene extends Scene {
         // Init state
         this.state = {
             gui: new Dat.GUI(), // Create GUI for scene
+            paused: false,
             volume: 0,
             updateList: [],
         };
@@ -44,6 +45,12 @@ class TrainScene extends Scene {
 
         // Populate GUI
         this.state.gui.add(this.state, 'volume', 0, 10);
+        this.state.gui.add(this.state, 'paused').onChange(this.togglePause);
+    }
+    
+    togglePause() {
+        this.paused = !this.paused;
+        console.log(this.paused);
     }
 
     move_fig(key) {
@@ -51,6 +58,10 @@ class TrainScene extends Scene {
     }
 
     update() {
+        if (!this.player.gameState) {
+            console.log("here");
+            location.reload();
+        }
         // Call update for each object obstacles
         for (const obj of this.obstacles) {
             obj.update(this.player);
