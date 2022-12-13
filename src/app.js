@@ -12,11 +12,11 @@ import { TrainScene } from 'scenes';
 import * as THREE from 'three';
 import { BackgroundMusic, GameOverSound } from './components/sounds';
 
+const camera = new PerspectiveCamera();
 // Initialize core ThreeJS components
-const scene = new TrainScene();
+const scene = new TrainScene(camera);
 const axes = new AxesHelper(50);
 scene.add(axes);
-const camera = new PerspectiveCamera();
 const renderer = new WebGLRenderer({ antialias: true });
 
 // Set up camera
@@ -40,22 +40,10 @@ controls.maxDistance = 16;
 controls.update();
 
 
-// set up audio
-// citation: https://threejs.org/docs/#api/en/audio/Audio
-// create an AudioListener and add it to the camera
-const listener = new THREE.AudioListener();
-camera.add(listener );
-
-// create a global audio source
-const sound = new THREE.Audio( listener );
-// load a sound and set it as the Audio object's buffer
-const audioLoader = new THREE.AudioLoader();
-
-
 // Render loop
 const onAnimationFrameHandler = (timeStamp) => {
     controls.update();
-    if (!scene.state.paused) {
+    if (!scene.state.paused && scene.started) {
         renderer.render(scene, camera);
         scene.update && scene.update(timeStamp);
     }
@@ -77,13 +65,13 @@ window.addEventListener('resize', windowResizeHandler, false);
 window.addEventListener("keyup", (e) => {
     const key = e.key;
     if (key === ' '){
-        startGame();
+        scene.startGame();
     }
     if (key === 'q'){
-        endGame();
+        scene.endGame();
     }
     if (key === 't'){
-        gameOver();
+        scene.gameOver();
     }
 });
 
@@ -92,32 +80,3 @@ window.addEventListener("keydown", (e) => {
     const key = e.key;
     scene.move_fig(key);
 });
-
-// Spacebar to start game
-const startGame = () =>{
-    console.log("startGame")
-    audioLoader.load( BackgroundMusic, function( buffer ) {
-        sound.setBuffer( buffer );
-        sound.setLoop( true );
-        sound.setVolume( 0.5 );
-        sound.play();
-    });
-}
-
-// q to end game
-const endGame = () =>{
-    console.log("endGame")
-    sound.stop();
-}
-
-// call this when player dies
-const gameOver = () =>{
-    console.log("gameOver")
-    sound.stop();
-    audioLoader.load( GameOverSound, function( buffer ) {
-        sound.setBuffer( buffer );
-        sound.setVolume( 0.5 );
-        sound.play();
-        sound.setLoop( false );
-    });
-}

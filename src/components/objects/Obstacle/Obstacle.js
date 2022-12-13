@@ -28,7 +28,7 @@ class Obstacle extends Group{
 
     set_position(track){
         if (track === 1) {
-            this.position.x =10;
+            this.position.x =3;
             this.position.y =0;
             this.position.z =10;
         }
@@ -38,7 +38,7 @@ class Obstacle extends Group{
             this.position.z =10;
         }
         if (track === 3) {
-            this.position.x =-10;
+            this.position.x =-3;
             this.position.y =0;
             this.position.z =10;
         }

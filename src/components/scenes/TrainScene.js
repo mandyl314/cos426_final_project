@@ -8,9 +8,11 @@ import { BasicLights } from 'lights';
 import { Scene, Color } from 'three'
 import * as Dat from 'dat.gui';
 import { Obstacle } from '../objects/Obstacle';
+import * as THREE from 'three';
+import { BackgroundMusic, GameOverSound } from '../sounds';
 
 class TrainScene extends Scene {
-    constructor() {
+    constructor(camera) {
         super();
 
         // Init state
@@ -20,6 +22,21 @@ class TrainScene extends Scene {
             volume: 0,
             updateList: [],
         };
+        
+        this.started = false;
+
+
+        // set up audio
+        // citation: https://threejs.org/docs/#api/en/audio/Audio
+        // create an AudioListener and add it to the camera
+        this.listener = new THREE.AudioListener();
+        camera.add(this.listener);
+
+        // load a sound and set it as the Audio object's buffer
+        this.audioLoader = new THREE.AudioLoader();
+
+        // create a global audio source
+        this.sound = new THREE.Audio( this.listener );
 
         // Set background to a nice color
         this.background = new Color(0x7ec0ee);
@@ -32,7 +49,7 @@ class TrainScene extends Scene {
         // this.add(train1);
         this.add(basicLights);
 
-        const player = new Figure();
+        const player = new Figure(this);
         this.add(player);
         this.player = player;
 
@@ -62,10 +79,50 @@ class TrainScene extends Scene {
             console.log("here");
             location.reload();
         }
+        let r = Math.random();
+        if(r<0.005){
+            let track = Math.floor(Math.random() * 3) + 1;
+            let new_obs = new Obstacle(track);
+            this.add(new_obs);
+            this.obstacles.push(new_obs);
+        }
         // Call update for each object obstacles
         for (const obj of this.obstacles) {
             obj.update(this.player);
         }
+    }
+
+    // Spacebar to start game
+    startGame(){
+        console.log("startGame");
+        let sound = this.sound;
+        this.audioLoader.load( BackgroundMusic, function( buffer) {
+            sound.setBuffer( buffer );
+            sound.setLoop( true );
+            sound.setVolume( 0.5 );
+            sound.play();
+        });
+        this.started = true;
+    }
+
+    // q to end game
+    endGame(){
+        console.log("endGame")
+        this.sound.stop();
+        this.started = false;
+    }
+
+    // call this when player dies
+    gameOver(){
+        console.log("gameOver")
+        this.sound.stop();
+        let sound = this.sound;
+        this.audioLoader.load( GameOverSound, function( buffer) {
+            sound.setBuffer( buffer );
+            sound.setVolume( 0.5 );
+            sound.play();
+            sound.setLoop( false );
+            });
     }
 }
 

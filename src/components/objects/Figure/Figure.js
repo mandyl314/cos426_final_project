@@ -3,7 +3,7 @@ import { Group } from 'three';
 
 // Reference: https://tympanus.net/codrops/2021/10/04/creating-3d-characters-in-three-js/
 class Figure extends Group{ 
-    constructor() {
+    constructor(scene) {
         super();
         this.gameState = true;      // a variable used to determine game state
 
@@ -15,6 +15,8 @@ class Figure extends Group{
         this.add(mesh);
         this.body_offset = 0.5; // front of body = this.pos.z - body_offset
         this.height_offset = (2+.5)/2;
+
+        this.scene = scene;
 
         // Create head
         const headGeometry = new THREE.BoxGeometry(.5, .5, .5)
@@ -37,11 +39,11 @@ class Figure extends Group{
         this.position.set(0, 0, -10);
     }
     move_fig(key, obstacles) {
-        if (key === "ArrowLeft") {
+        if (key === "ArrowLeft" && this.track != 1) {
             this.position.x += 3.0;
             this.track = this.track - 1;
         }
-        if (key === "ArrowRight" ) {
+        if (key === "ArrowRight" && this.track != 3) {
             this.position.x -= 3.0;
             this.track = this.track + 1;
         }
@@ -59,10 +61,14 @@ class Figure extends Group{
     }
 
     death(obstacle){
-        this.gameState = false;
         let obs_pos = obstacle.position.clone()
         this.rotation.x = -Math.PI / 2;
         this.position.z = obs_pos.z - obstacle.width_offset - this.height_offset;
+
+        // game over sound: need to fix
+        // this.scene.gameOver(this);
+
+        this.gameState = false;
         console.log(this);
     }
       
