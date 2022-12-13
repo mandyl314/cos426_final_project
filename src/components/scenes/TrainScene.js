@@ -22,7 +22,7 @@ class TrainScene extends Scene {
             volume: 0,
             updateList: [],
         };
-        
+
         this.started = false;
 
 
@@ -42,7 +42,7 @@ class TrainScene extends Scene {
         this.background = new Color(0x7ec0ee);
         
 
-        // const train1 = new Train(9, 0, 40, 0, Math.PI/2, 0);
+        // const train1 = new Train(3, 0, 30, 0, Math.PI/2, 0);
         // const train2 = new Train(0, 0, 40, 0, Math.PI/2, 0);
         // const train3 = new Train(-9, 0, 40,0, Math.PI/2, 0);
         const basicLights = new BasicLights();

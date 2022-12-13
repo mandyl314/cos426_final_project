@@ -66,7 +66,7 @@ class Figure extends Group{
         this.position.z = obs_pos.z - obstacle.width_offset - this.height_offset;
 
         // game over sound: need to fix
-        // this.scene.gameOver(this);
+        this.scene.gameOver(this);
 
         this.gameState = false;
         console.log(this);

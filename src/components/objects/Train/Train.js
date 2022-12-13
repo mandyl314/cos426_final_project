@@ -23,6 +23,10 @@ class Train extends Group {
             this.add(gltf.scene);
         });
     }
+    update(figure){
+        this.position.z -=0.1;
+        figure.handleCollision(this);
+    }
 }
 
 export default Train;

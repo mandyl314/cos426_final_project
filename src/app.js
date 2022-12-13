@@ -46,6 +46,8 @@ const onAnimationFrameHandler = (timeStamp) => {
     if (!scene.state.paused && scene.started) {
         renderer.render(scene, camera);
         scene.update && scene.update(timeStamp);
+    }else if(!scene.started){
+        renderer.render(scene, camera);
     }
     window.requestAnimationFrame(onAnimationFrameHandler);
 };
