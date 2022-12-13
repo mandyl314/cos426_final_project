@@ -3,7 +3,7 @@ require('../objects/Train/scene.bin');
 //Put your textures here
 require('../objects/Train/baggagecar_Material_u1_v1_baseColor.png');
 
-import { Train } from 'objects';
+import { Figure, Train } from 'objects';
 import { BasicLights } from 'lights';
 import { Scene, Color } from 'three'
 import * as Dat from 'dat.gui';
@@ -28,6 +28,9 @@ class TrainScene extends Scene {
         const basicLights = new BasicLights();
         this.add(train1, train2, train3);
         this.add(basicLights);
+
+        const player = new Figure();
+        this.add(player);
     }
 }
 

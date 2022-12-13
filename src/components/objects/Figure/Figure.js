@@ -1,11 +1,13 @@
+import * as THREE from 'three';
 import { Group } from 'three';
 
 // Reference: https://tympanus.net/codrops/2021/10/04/creating-3d-characters-in-three-js/
 class Figure extends Group{
     constructor() {
+        super();
         // Create body as a box
         // Create a material with a white color
-        const material = new THREE.MeshLambertMaterial({ color: 0xffffff });
+        const material = new THREE.MeshLambertMaterial({ color: 0xc29a97 });
         const bodyGeometry = new THREE.BoxGeometry(1, 1.5, 1);
         const mesh = new THREE.Mesh(bodyGeometry, material);
         this.add(mesh);
@@ -27,3 +29,5 @@ class Figure extends Group{
         }
     }
 }
+
+export default Figure;
