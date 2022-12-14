@@ -82,3 +82,9 @@ window.addEventListener("keydown", (e) => {
     const key = e.key;
     scene.move_fig(key);
 });
+
+window.addEventListener("keyup", (e) => {
+    const key = e.key;
+    if (key === 'ArrowUp')
+        scene.stopJump();
+});

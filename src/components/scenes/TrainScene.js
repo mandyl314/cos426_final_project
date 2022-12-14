@@ -74,7 +74,16 @@ class TrainScene extends Scene {
         this.player.move_fig(key, this.obstacles);
     }
 
+    stopJump() {
+        this.player.stopJump();
+    }
+
     update() {
+        // apply gravity and update position
+        this.player.applyGravity();
+        //console.log(timeStamp);
+        this.player.integrate(18/1000);
+
         if (!this.player.gameState) {
             console.log("here");
             location.reload();
@@ -90,6 +99,8 @@ class TrainScene extends Scene {
         for (const obj of this.obstacles) {
             obj.update(this.player);
         }
+
+        
     }
 
     // Spacebar to start game

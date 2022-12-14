@@ -20,10 +20,9 @@ class Obstacle extends Group{
         this.add(mesh);
 
         this.width_offset = .25; // front of box = this.position.z - width_offset
-        this.height_offset = 1; // top of box = this.position.y + height_offset
+        this.height_offset = 1.5; // top of box = this.position.y + height_offset
         this.track = track;
         this.set_position(track);
-    
     }
 
     set_position(track){

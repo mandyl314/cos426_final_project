@@ -7,6 +7,13 @@ class Figure extends Group{
         super();
         this.gameState = true;      // a variable used to determine game state
 
+        this.previous = new THREE.Vector3();
+        this.netForce = new THREE.Vector3();
+        this.gravity = -9.8 * 20;
+        this.mass = 70;
+
+        this.isJumping = false;
+
         // Create body as a box
         // Create a material with a white color
         const material = new THREE.MeshLambertMaterial({ color: 0xc29a97 });
@@ -48,15 +55,49 @@ class Figure extends Group{
             this.track = this.track + 1;
         }
 
-        // TODO: need to handle jump
         if (key === "ArrowUp") {
-            this.position.z += 2.0;
+            //const force = new THREE.Vector3(0, 400000, 0);
+            //this.netForce.addVectors(this.netForce, force);
+            this.gravity *= -2.0;
         }
-        if (key === "ArrowDown") {
-            this.position.z -= 2.0;
-        }
+        
         for(let i=0;i<obstacles.length;i++){
-            this.handleCollision(obstacles[i])
+            this.handleCollision(obstacles[i]);
+        }
+    }
+
+    stopJump() {
+        this.gravity /= -2.0;
+    }
+
+    applyGravity() {
+        const force = new THREE.Vector3(0, this.gravity * this.mass, 0);
+        this.netForce.addVectors(this.netForce, force);
+    }
+
+    integrate(deltaT) {
+
+        const DAMPING = 0.0;
+        const newPos = new THREE.Vector3();
+        const vtdt = new THREE.Vector3();
+
+        vtdt.subVectors(this.position, this.previous);
+        this.previous = this.position;
+        newPos.add(this.position);
+        newPos.add(vtdt.multiplyScalar(1 - DAMPING));
+        const at = this.netForce.divideScalar(this.mass);
+        newPos.add(at.multiplyScalar(deltaT * deltaT));
+        console.log(newPos);
+        this.position.x = newPos.x;
+        this.position.y = newPos.y;
+        //this.position.z = newPos.z;
+        //this.position = newPos;
+        this.netForce = new THREE.Vector3();
+        console.log(this.position);
+        
+        // floor
+        if (this.position.y < 0) {
+            this.position.y = 0;
         }
     }
 
@@ -77,12 +118,12 @@ class Figure extends Group{
           let pos = this.position.clone();
           let obs_pos = obstacle.position.clone();
           let width_offset = obstacle.width_offset;
-          let height_offset =obstacle.height_offset;
+          let height_offset = obstacle.height_offset;
 
           if(this.track == obstacle.track){
-            if(obs_pos.z - width_offset<=pos.z && obs_pos.z + width_offset>=pos.z){
+            if((obs_pos.z - width_offset<=pos.z && obs_pos.z + width_offset>=pos.z) && obs_pos.y + height_offset >= pos.y){
                 this.death(obstacle);
-              }
+            }
           }
 
         
