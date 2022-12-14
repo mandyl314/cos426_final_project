@@ -46,13 +46,18 @@ class Figure extends Group{
         this.position.set(0, 0, -10);
     }
     move_fig(key, obstacles) {
+        let switchTracks = false;
+        let moved_left = false;
         if (key === "ArrowLeft" && this.track != 1) {
             this.position.x += 3.0;
             this.track = this.track - 1;
+            switchTracks = true;
+            moved_left = true;
         }
         if (key === "ArrowRight" && this.track != 3) {
             this.position.x -= 3.0;
             this.track = this.track + 1;
+            switchTracks = true;
         }
 
         if (key === "ArrowUp") {
@@ -62,7 +67,7 @@ class Figure extends Group{
         }
         
         for(let i=0;i<obstacles.length;i++){
-            this.handleCollision(obstacles[i]);
+            this.handleCollision(obstacles[i],switchTracks,moved_left);
         }
     }
 
@@ -87,13 +92,13 @@ class Figure extends Group{
         newPos.add(vtdt.multiplyScalar(1 - DAMPING));
         const at = this.netForce.divideScalar(this.mass);
         newPos.add(at.multiplyScalar(deltaT * deltaT));
-        console.log(newPos);
+        // console.log(newPos);
         this.position.x = newPos.x;
         this.position.y = newPos.y;
         //this.position.z = newPos.z;
         //this.position = newPos;
         this.netForce = new THREE.Vector3();
-        console.log(this.position);
+        // console.log(this.position);
         
         // floor
         if (this.position.y < 0) {
@@ -101,28 +106,41 @@ class Figure extends Group{
         }
     }
 
-    death(obstacle){
+    death(obstacle, switchTracks, moved_left){
         let obs_pos = obstacle.position.clone()
-        this.rotation.x = -Math.PI / 2;
-        this.position.z = obs_pos.z - obstacle.width_offset - this.height_offset;
+        const EPS = .5
+        const half_track_width = 1.5+EPS;
+        if (!switchTracks){
+            this.rotation.x = -Math.PI / 2;
+            this.position.z = obs_pos.z - obstacle.front_offset - this.height_offset;
+        }else if(moved_left){
+            this.rotation.z = Math.PI / 2;
+            this.position.x = this.position.x-half_track_width
+        }else{
+            this.rotation.z = -Math.PI / 2;
+            this.position.x = this.position.x+half_track_width
+        }
+        console.log("here1")
 
         // game over sound: need to fix
         this.scene.gameOver(this);
 
         this.gameState = false;
-        console.log(this);
     }
       
-    handleCollision(obstacle) {
+    handleCollision(obstacle, switchTracks, moved_left) {
 
           let pos = this.position.clone();
           let obs_pos = obstacle.position.clone();
-          let width_offset = obstacle.width_offset;
+          let front_offset = obstacle.front_offset;
+          let back_offset = obstacle.back_offset;
           let height_offset = obstacle.height_offset;
 
+
           if(this.track == obstacle.track){
-            if((obs_pos.z - width_offset<=pos.z && obs_pos.z + width_offset>=pos.z) && obs_pos.y + height_offset >= pos.y){
-                this.death(obstacle);
+            if((obs_pos.z - front_offset<=pos.z && obs_pos.z + back_offset>=pos.z) && obs_pos.y + height_offset >= pos.y){
+                console.log("here");
+                this.death(obstacle, switchTracks,moved_left);
             }
           }
 

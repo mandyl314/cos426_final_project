@@ -40,9 +40,20 @@ controls.maxDistance = 16;
 controls.update();
 
 
+const frustrum_check = (element,camera) => {
+    const offset =40;
+    if(element.position.z < camera.position.z-offset){
+        return false;
+    }
+    return true;
+}
+
 // Render loop
 const onAnimationFrameHandler = (timeStamp) => {
     controls.update();
+    scene.traverse(function(element){
+        element.visible = frustrum_check(element,camera);
+    });
     if (!scene.state.paused && scene.started) {
         renderer.render(scene, camera);
         scene.update && scene.update(timeStamp);
@@ -51,7 +62,9 @@ const onAnimationFrameHandler = (timeStamp) => {
     }
     window.requestAnimationFrame(onAnimationFrameHandler);
 };
+const args= {camera: camera}
 window.requestAnimationFrame(onAnimationFrameHandler);
+
 
 // Resize Handler
 const windowResizeHandler = () => {
@@ -81,10 +94,4 @@ window.addEventListener("keyup", (e) => {
 window.addEventListener("keydown", (e) => {
     const key = e.key;
     scene.move_fig(key);
-});
-
-window.addEventListener("keyup", (e) => {
-    const key = e.key;
-    if (key === 'ArrowUp')
-        scene.stopJump();
 });

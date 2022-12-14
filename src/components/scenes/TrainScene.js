@@ -42,23 +42,26 @@ class TrainScene extends Scene {
         this.background = new Color(0x7ec0ee);
         
 
-        // const train1 = new Train(3, 0, 30, 0, Math.PI/2, 0);
-        // const train2 = new Train(0, 0, 40, 0, Math.PI/2, 0);
-        // const train3 = new Train(-9, 0, 40,0, Math.PI/2, 0);
+        const train1 = new Train(1);
+        const train2 = new Train(2);
+        const train3 = new Train(3);
         const basicLights = new BasicLights();
-        // this.add(train1);
+        this.add(train1,train2,train3);
         this.add(basicLights);
+        this.trains = [];
+        this.trains.push(train1,train2,train3);
 
         const player = new Figure(this);
         this.add(player);
         this.player = player;
 
-        const obstacle1 = new Obstacle(1);
+        // const obstacle1 = new Obstacle(1);
         const obstacle2 = new Obstacle(2);
-        const obstacle3 = new Obstacle(3);
-        this.add(obstacle1, obstacle2);
+        // const obstacle3 = new Obstacle(3);
+        this.add( obstacle2);
         this.obstacles =[];
-        this.obstacles.push(obstacle1, obstacle2)
+        this.obstacles.push(obstacle2);
+        this.obstacles.push(train1,train2,train3);
 
         // Populate GUI
         this.state.gui.add(this.state, 'volume', 0, 10);
@@ -89,15 +92,25 @@ class TrainScene extends Scene {
             location.reload();
         }
         let r = Math.random();
-        if(r<0.005){
+        if(r<0.003){
             let track = Math.floor(Math.random() * 3) + 1;
             let new_obs = new Obstacle(track);
             this.add(new_obs);
             this.obstacles.push(new_obs);
         }
+        let r2 = Math.random();
+        if(r2<0.005){
+            let track = Math.floor(Math.random() * 3) + 1;
+            let train = this.trains[track-1];
+            if(!train.visible){
+                train.position.z = 30
+            }
+        }
         // Call update for each object obstacles
         for (const obj of this.obstacles) {
-            obj.update(this.player);
+            if(obj.visible){
+                obj.update(this.player);
+            }
         }
 
         
