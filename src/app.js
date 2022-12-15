@@ -67,21 +67,26 @@ document.body.append(p);
 
 // Render loop
 const onAnimationFrameHandler = (timeStamp) => {
-    time = clock.elapsedTime;
-    document.getElementById("scoreboard").textContent = "Elapsed Time: " + Math.round(time);
-    controls.update();
-    scene.traverse(function(element){
-        element.visible = frustrum_check(element,camera);
-    });
-    if (!scene.state.paused && scene.started) {
-        const dt = clock.getDelta();
-        mixer.update(dt);
-        renderer.render(scene, camera);
-        scene.update && scene.update(timeStamp);
-    } else if(!scene.started){
-        renderer.render(scene, camera);
+    if (window.dead) {
+        activateEndingScreen();
+    } else {
+        time = clock.elapsedTime;
+        document.getElementById("scoreboard").textContent = "Elapsed Time: " + Math.round(time);
+        controls.update();
+        scene.traverse(function(element){
+            element.visible = frustrum_check(element,camera);
+        });
+        if (!scene.state.paused && scene.started) {
+            const dt = clock.getDelta();
+            mixer.update(dt);
+            renderer.render(scene, camera);
+            scene.update && scene.update(timeStamp);
+        } else if(!scene.started){
+            renderer.render(scene, camera);
+        }
+        window.requestAnimationFrame(onAnimationFrameHandler);
     }
-    window.requestAnimationFrame(onAnimationFrameHandler);
+    
 };
 const args= {camera: camera}
 window.requestAnimationFrame(onAnimationFrameHandler);
@@ -136,6 +141,7 @@ const createStartingScreen = () => {
         ready = true;
     }, 2000);
 
+    // wait for starting signal
     window.addEventListener("keydown", (e) => {
         if (ready && e.key === " ") {
             document.getElementById("starting").remove();
@@ -145,7 +151,25 @@ const createStartingScreen = () => {
 }
 createStartingScreen();
 
-let endingScreen = false;
+window.dead = false;
+let endingScreen;
 const createEndingScreen = () => {
+    endingScreen = document.createElement("div");
+    endingScreen.id = "endScreen";
+    endingScreen.classList.add("popup");
+    const node = document.createTextNode("");
+    endingScreen.appendChild(node);
+}
+createEndingScreen();
 
+const activateEndingScreen = () => {
+    endingScreen.textContent = "Game over! Your score: " + Math.round(clock.elapsedTime) + ". Press r to restart.";
+    document.body.append(endingScreen);
+    // add event listener for restart signal
+    window.addEventListener("keydown", (e) => {
+        if (window.dead && e.key === 'r') {
+            document.getElementById("endScreen").remove;
+            location.reload();
+        }
+    });
 }
