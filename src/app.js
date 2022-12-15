@@ -89,9 +89,9 @@ window.addEventListener("keyup", (e) => {
         scene.gameOver();
     }
 
-    if (key === 'ArrowUp') {
+    /*if (key === 'ArrowUp') {
         scene.stopJump();
-    }
+    }*/
 });
 
 // move
