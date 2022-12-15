@@ -1,9 +1,10 @@
 require('../objects/Train/scene.bin');
+require('../objects/Robot/scene.bin');
 
 //Put your textures here
 require('../objects/Train/baggagecar_Material_u1_v1_baseColor.png');
 
-import { Figure, Train} from 'objects';
+import { Figure, Robot, Train} from 'objects';
 import { BasicLights } from 'lights';
 import { Scene, Color } from 'three'
 import * as Dat from 'dat.gui';
@@ -49,9 +50,14 @@ class TrainScene extends Scene {
         // this.add(train1);
         this.add(basicLights);
 
-        const player = new Figure(this);
-        this.add(player);
-        this.player = player;
+        // const player = new Figure(this);
+        // this.add(player);
+        // this.player = player;
+
+        const robot = new Robot(this);
+        this.add(robot);
+        this.player = robot;
+        console.log("IN SCENE: ", this.player);
 
         const obstacle1 = new Obstacle(1);
         const obstacle2 = new Obstacle(2);
@@ -71,14 +77,16 @@ class TrainScene extends Scene {
     }
 
     move_fig(key) {
-        this.player.move_fig(key, this.obstacles);
+        // this.player.move_fig(key, this.obstacles);
     }
 
     update() {
-        if (!this.player.gameState) {
-            console.log("here");
-            location.reload();
-        }
+        console.log("scene updating");
+        // if (!this.player.gameState) {
+        //     location.reload();
+        // }
+        // this.player.update();
+
         let r = Math.random();
         if(r<0.005){
             let track = Math.floor(Math.random() * 3) + 1;
@@ -103,6 +111,7 @@ class TrainScene extends Scene {
             sound.play();
         });
         this.started = true;
+        // this.player.animate();
     }
 
     // q to end game

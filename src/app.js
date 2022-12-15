@@ -39,12 +39,29 @@ controls.minDistance = 4;
 controls.maxDistance = 16;
 controls.update();
 
+// Set up animation
+const mixer = new THREE.AnimationMixer(scene.player);
+const clock = new THREE.Clock();
+setTimeout(() => {
+    const clip = THREE.AnimationClip.findByName(scene.player.animations, 'Running');
+    // console.log("Action Keyframes: ", action.tracks);
+    const action = mixer.clipAction(clip);
+    action.play();
+    // action.play();
+    action.loop = THREE.LoopRepeat;
+}, 1000);
+// const running = THREE.AnimationClip.findByName(scene.player.animations, 'Running');
+
 
 // Render loop
 const onAnimationFrameHandler = (timeStamp) => {
     controls.update();
     if (!scene.state.paused && scene.started) {
+        const dt = clock.getDelta();
+        mixer.update(dt);
+        console.log(mixer.time);
         renderer.render(scene, camera);
+        // scene.player.animate();
         scene.update && scene.update(timeStamp);
     }else if(!scene.started){
         renderer.render(scene, camera);
