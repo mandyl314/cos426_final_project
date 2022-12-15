@@ -1,9 +1,10 @@
 require('../objects/Train/scene.bin');
+require('../objects/Robot/scene.bin');
 
 //Put your textures here
 require('../objects/Train/baggagecar_Material_u1_v1_baseColor.png');
 
-import { Figure, Train} from 'objects';
+import { Robot, Train} from 'objects';
 import { BasicLights } from 'lights';
 import { Scene, Color } from 'three'
 import * as Dat from 'dat.gui';
@@ -54,9 +55,10 @@ class TrainScene extends Scene {
         this.add(train1,train2,train3);
         // this.trains.push(train1)
 
-        const player = new Figure(this);
-        this.add(player);
-        this.player = player;
+        const robot = new Robot(this);
+        this.add(robot);
+        this.player = robot;
+        console.log("IN SCENE: ", this.player);
 
         const obstacle1 = new Obstacle(1);
         // const obstacle2 = new Obstacle(2);
@@ -156,15 +158,10 @@ class TrainScene extends Scene {
     }
 
     update() {
-        // apply gravity and update position
-        this.player.applyGravity();
-        //console.log(timeStamp);
-        this.player.integrate(18/1000);
-
         if (!this.player.gameState) {
-            console.log("here");
             location.reload();
         }
+
         let r = Math.random();
         if(r<0.003){
             let track = Math.floor(Math.random() * 3) + 1;
