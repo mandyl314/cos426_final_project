@@ -53,9 +53,20 @@ setTimeout(() => {
 // const running = THREE.AnimationClip.findByName(scene.player.animations, 'Running');
 
 
+const frustrum_check = (element,camera) => {
+    const offset =40;
+    if(element.position.z < camera.position.z-offset){
+        return false;
+    }
+    return true;
+}
+
 // Render loop
 const onAnimationFrameHandler = (timeStamp) => {
     controls.update();
+    scene.traverse(function(element){
+        element.visible = frustrum_check(element,camera);
+    });
     if (!scene.state.paused && scene.started) {
         const dt = clock.getDelta();
         mixer.update(dt);
@@ -68,7 +79,9 @@ const onAnimationFrameHandler = (timeStamp) => {
     }
     window.requestAnimationFrame(onAnimationFrameHandler);
 };
+const args= {camera: camera}
 window.requestAnimationFrame(onAnimationFrameHandler);
+
 
 // Resize Handler
 const windowResizeHandler = () => {

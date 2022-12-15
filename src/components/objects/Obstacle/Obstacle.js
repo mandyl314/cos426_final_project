@@ -14,38 +14,39 @@ class Obstacle extends Group{
         color: 0xFF8844,
         map: loader.load(BricksTexture),
         });
+        
+        this.front_offset = .25; // front of box = this.position.z - front_offset
+        this.back_offset = .25;
+        this.height_offset = 1.2; // top of box = this.position.y + height_offset
+        this.track = track;
 
-        const obstacleGeometry = new THREE.BoxGeometry(2, 2, .5);
+        const obstacleGeometry = new THREE.BoxGeometry(2, this.height_offset , .5);
         const mesh = new THREE.Mesh(obstacleGeometry, material);
         this.add(mesh);
 
-        this.width_offset = .25; // front of box = this.position.z - width_offset
-        this.height_offset = 1; // top of box = this.position.y + height_offset
-        this.track = track;
         this.set_position(track);
-    
     }
 
     set_position(track){
         if (track === 1) {
-            this.position.x =3;
-            this.position.y =0;
-            this.position.z =10;
+            this.position.x =3.6;
+            this.position.y =this.height_offset/2;
+            this.position.z =20;
         }
         if (track === 2) {
             this.position.x =0;
-            this.position.y =0;
-            this.position.z =10;
+            this.position.y =this.height_offset/2;
+            this.position.z =20;
         }
         if (track === 3) {
-            this.position.x =-3;
-            this.position.y =0;
-            this.position.z =10;
+            this.position.x =-3.6;
+            this.position.y =this.height_offset/2;
+            this.position.z =20;
         }
     }
     update(figure){
         this.position.z -=0.1;
-        // figure.handleCollision(this);
+        // figure.handleCollision(this,false,false);
     }
 }
 

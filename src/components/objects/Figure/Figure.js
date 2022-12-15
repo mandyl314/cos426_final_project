@@ -7,6 +7,13 @@ class Figure extends Group{
         super();
         this.gameState = true;      // a variable used to determine game state
 
+        this.previous = new THREE.Vector3();
+        this.netForce = new THREE.Vector3();
+        this.gravity = -9.8 * 20;
+        this.mass = 70;
+
+        this.isJumping = false;
+
         // Create body as a box
         // Create a material with a white color
         const material = new THREE.MeshLambertMaterial({ color: 0xc29a97 });
@@ -39,50 +46,101 @@ class Figure extends Group{
         this.position.set(0, 0, -10);
     }
     move_fig(key, obstacles) {
+        let switchTracks = false;
+        let moved_left = false;
         if (key === "ArrowLeft" && this.track != 1) {
-            this.position.x += 3.0;
+            this.position.x += 3.6;
             this.track = this.track - 1;
+            switchTracks = true;
+            moved_left = true;
         }
         if (key === "ArrowRight" && this.track != 3) {
-            this.position.x -= 3.0;
+            this.position.x -= 3.6;
             this.track = this.track + 1;
+            switchTracks = true;
         }
 
-        // TODO: need to handle jump
         if (key === "ArrowUp") {
-            this.position.z += 2.0;
+            //const force = new THREE.Vector3(0, 400000, 0);
+            //this.netForce.addVectors(this.netForce, force);
+            this.gravity *= -2.0;
         }
-        if (key === "ArrowDown") {
-            this.position.z -= 2.0;
-        }
+        
         for(let i=0;i<obstacles.length;i++){
-            this.handleCollision(obstacles[i])
+            this.handleCollision(obstacles[i],switchTracks,moved_left);
         }
     }
 
-    death(obstacle){
+    stopJump() {
+        this.gravity /= -2.0;
+    }
+
+    applyGravity() {
+        const force = new THREE.Vector3(0, this.gravity * this.mass, 0);
+        this.netForce.addVectors(this.netForce, force);
+    }
+
+    integrate(deltaT) {
+
+        const DAMPING = 0.0;
+        const newPos = new THREE.Vector3();
+        const vtdt = new THREE.Vector3();
+
+        vtdt.subVectors(this.position, this.previous);
+        this.previous = this.position;
+        newPos.add(this.position);
+        newPos.add(vtdt.multiplyScalar(1 - DAMPING));
+        const at = this.netForce.divideScalar(this.mass);
+        newPos.add(at.multiplyScalar(deltaT * deltaT));
+        // console.log(newPos);
+        this.position.x = newPos.x;
+        this.position.y = newPos.y;
+        //this.position.z = newPos.z;
+        //this.position = newPos;
+        this.netForce = new THREE.Vector3();
+        // console.log(this.position);
+        
+        // floor
+        if (this.position.y < 0) {
+            this.position.y = 0;
+        }
+    }
+
+    death(obstacle, switchTracks, moved_left){
         let obs_pos = obstacle.position.clone()
-        this.rotation.x = -Math.PI / 2;
-        this.position.z = obs_pos.z - obstacle.width_offset - this.height_offset;
+        const EPS = .5
+        const half_track_width = 1.8+EPS;
+        if (!switchTracks){
+            this.rotation.x = -Math.PI / 2;
+            this.position.z = obs_pos.z - obstacle.front_offset - this.height_offset;
+        }else if(moved_left){
+            this.rotation.z = Math.PI / 2;
+            this.position.x = this.position.x-half_track_width
+        }else{
+            this.rotation.z = -Math.PI / 2;
+            this.position.x = this.position.x+half_track_width
+        }
 
         // game over sound: need to fix
         this.scene.gameOver(this);
 
         this.gameState = false;
-        console.log(this);
     }
       
-    handleCollision(obstacle) {
+    handleCollision(obstacle, switchTracks, moved_left) {
 
           let pos = this.position.clone();
           let obs_pos = obstacle.position.clone();
-          let width_offset = obstacle.width_offset;
-          let height_offset =obstacle.height_offset;
+          let front_offset = obstacle.front_offset;
+          let back_offset = obstacle.back_offset;
+          let height_offset = obstacle.height_offset;
+
 
           if(this.track == obstacle.track){
-            if(obs_pos.z - width_offset<=pos.z && obs_pos.z + width_offset>=pos.z){
-                this.death(obstacle);
-              }
+            if((obs_pos.z - front_offset<=pos.z && obs_pos.z + back_offset>=pos.z) && obs_pos.y + height_offset >= pos.y){
+                console.log("here");
+                this.death(obstacle, switchTracks,moved_left);
+            }
           }
 
         
