@@ -21,7 +21,7 @@ class TrainScene extends Scene {
         this.state = {
             gui: new Dat.GUI(), // Create GUI for scene
             paused: false,
-            volume: 0,
+            // volume: 0,
             updateList: [],
         };
 
@@ -55,9 +55,9 @@ class TrainScene extends Scene {
         this.trains.push(train1,train2,train3);
         this.obstacles.push(train1,train2,train3);
         this.add(train1,train2,train3);
-        // this.add(train1);
-        // this.trains.push(train1);
-        // this.obstacles.push(train1);
+        this.add(train1);
+        this.trains.push(train1);
+        this.obstacles.push(train1);
        
         const robot = new Robot(this);
         this.add(robot);
@@ -160,13 +160,17 @@ class TrainScene extends Scene {
 
 
         // Populate GUI
-        this.state.gui.add(this.state, 'volume', 0, 10);
+        // this.state.gui.add(this.state, 'volume', 0, 10).setValue(5).onChange(this.adjustVolume(this.state.gui.volume));
         this.state.gui.add(this.state, 'paused').onChange(this.togglePause);
     }
     
     togglePause() {
         this.paused = !this.paused;
         console.log(this.paused);
+    }
+
+    adjustVolume(v){
+        this.sound.setVolume(v)
     }
 
     move_fig(key) {
