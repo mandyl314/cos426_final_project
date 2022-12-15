@@ -14,7 +14,7 @@ class Robot extends Group {
         // Set up dynamics
         this.previous = new THREE.Vector3();
         this.netForce = new THREE.Vector3();
-        this.gravity = -9.8 * 20;
+        this.gravity = -9.8 * 50;
         this.mass = 70;
 
         this.isJumping = false;
@@ -49,9 +49,10 @@ class Robot extends Group {
         }
 
         if (key === "ArrowUp") {
-            const force = new THREE.Vector3(0, 400000, 0);
-            this.netForce.addVectors(this.netForce, force);
-            this.gravity *= -2.0;
+            if (this.gravity > 9.8 * 50 - 1) {
+                return;
+            }
+            this.gravity *= -1.5;
         }
         
         for(let i=0;i<obstacles.length;i++){
@@ -76,7 +77,7 @@ class Robot extends Group {
     }
 
     stopJump() {
-        this.gravity /= -2.0;
+        this.gravity /= -1.5;
     }
 
     applyGravity() {
@@ -107,6 +108,10 @@ class Robot extends Group {
         // floor
         if (this.position.y < 0) {
             this.position.y = 0;
+        }
+
+        if (this.position.y >= 5.0) {
+            this.stopJump();
         }
     }
 

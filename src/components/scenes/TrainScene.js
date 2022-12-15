@@ -158,6 +158,10 @@ class TrainScene extends Scene {
     }
 
     update() {
+
+        this.player.applyGravity();
+        this.player.integrate(18 / 1000);
+
         if (!this.player.gameState) {
             location.reload();
         }
