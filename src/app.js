@@ -139,7 +139,7 @@ const createStartingScreen = () => {
     setTimeout(() => {
         box.textContent = "Press space to start!";
         ready = true;
-    }, 2000);
+    }, 4000);
 
     // wait for starting signal
     window.addEventListener("keydown", (e) => {

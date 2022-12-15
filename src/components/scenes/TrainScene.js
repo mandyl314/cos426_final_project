@@ -212,15 +212,19 @@ class TrainScene extends Scene {
     // call this when player dies
     gameOver(){
         console.log("gameOver")
-        window.dead = true;
-        this.sound.stop();
-        let sound = this.sound;
-        this.audioLoader.load( GameOverSound, function( buffer) {
+        // give time for character to be pushed
+        setTimeout(() => {
+            window.dead = true;
+            this.sound.stop();
+            let sound = this.sound;
+            this.audioLoader.load( GameOverSound, function( buffer) {
             sound.setBuffer( buffer );
             sound.setVolume( 0.5 );
             sound.play();
             sound.setLoop( false );
             });
+        }, 1000)
+        
     }
 }
 
