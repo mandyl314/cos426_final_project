@@ -1,0 +1,10 @@
+h1 {
+    top: 0;
+    left: 0;
+    text-align: center;
+    font-family: 'Courier New', Courier, monospace;
+    background-color: orange;
+    height: 150px;
+    width: 200px;
+    position: absolute;
+}
