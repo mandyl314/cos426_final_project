@@ -12,8 +12,8 @@ class Train extends Group {
         // Call parent Group() constructor
         super();
         let posx = 0;
-        if (track == 1) posx = 3;
-        else if (track == 3) posx = -3;
+        if (track == 1) posx = 3.6;
+        else if (track == 3) posx = -3.6;
 
 
         // using GLTF file

@@ -49,13 +49,13 @@ class Figure extends Group{
         let switchTracks = false;
         let moved_left = false;
         if (key === "ArrowLeft" && this.track != 1) {
-            this.position.x += 3.0;
+            this.position.x += 3.6;
             this.track = this.track - 1;
             switchTracks = true;
             moved_left = true;
         }
         if (key === "ArrowRight" && this.track != 3) {
-            this.position.x -= 3.0;
+            this.position.x -= 3.6;
             this.track = this.track + 1;
             switchTracks = true;
         }
@@ -109,7 +109,7 @@ class Figure extends Group{
     death(obstacle, switchTracks, moved_left){
         let obs_pos = obstacle.position.clone()
         const EPS = .5
-        const half_track_width = 1.5+EPS;
+        const half_track_width = 1.8+EPS;
         if (!switchTracks){
             this.rotation.x = -Math.PI / 2;
             this.position.z = obs_pos.z - obstacle.front_offset - this.height_offset;
@@ -120,7 +120,6 @@ class Figure extends Group{
             this.rotation.z = -Math.PI / 2;
             this.position.x = this.position.x+half_track_width
         }
-        console.log("here1")
 
         // game over sound: need to fix
         this.scene.gameOver(this);
