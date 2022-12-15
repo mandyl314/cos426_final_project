@@ -44,15 +44,18 @@ class TrainScene extends Scene {
         this.background = new Color(0x000000);
         
 
-        // const train1 = new Train(1);
-        // const train2 = new Train(2);
-        // const train3 = new Train(3);
+        const train1 = new Train(1);
+        const train2 = new Train(2);
+        const train3 = new Train(3);
         const basicLights = new BasicLights();
-        // this.add(train1,train2,train3);
+        this.add(train1,train2,train3);
+        // this.add(train1);
         this.add(basicLights);
-        // this.trains = [];
-        // this.trains.push(train1,train2,train3);
-        // this.add(train1,train2,train3);
+        this.trains = [];
+        this.trains.push(train1,train2,train3);
+        // this.trains.push(train1);
+        this.add(train1,train2,train3);
+        // this.add(train1);
        
 
         const robot = new Robot(this);
@@ -60,13 +63,14 @@ class TrainScene extends Scene {
         this.player = robot;
         console.log("IN SCENE: ", this.player);
 
-        const obstacle1 = new Obstacle(1);
-        // const obstacle2 = new Obstacle(2);
+        // const obstacle1 = new Obstacle(1);
+        const obstacle2 = new Obstacle(2);
         // const obstacle3 = new Obstacle(3);
-        this.add( obstacle1);
+        this.add( obstacle2);
         this.obstacles =[];
-        this.obstacles.push(obstacle1);
-        // this.obstacles.push(train1,train2,train3);
+        this.obstacles.push(obstacle2);
+        this.obstacles.push(train1,train2,train3);
+        // this.obstacles.push(train1);
 
         const loader = new THREE.TextureLoader();
         const planeGeometry = new THREE.PlaneGeometry( 3, 3, 1, 1 );
@@ -126,8 +130,6 @@ class TrainScene extends Scene {
 
         const side5 = new THREE.Mesh( planeGeometry2, material3 );
         side5.rotation.x = Math.PI/2;
-        // side5.rotation.y = -Math.PI/2;
-        // side5.rotation.z = -Math.PI;
         side5.scale.multiplyScalar( 20);
         side5.position.set(0,40,0)
         this.add( side5 );
@@ -193,14 +195,14 @@ class TrainScene extends Scene {
             this.add(new_obs);
             this.obstacles.push(new_obs);
         }
-        // let r2 = Math.random();
-        // if(r2<0.005){
-        //     let track = Math.floor(Math.random() * 3) + 1;
-        //     let train = this.trains[track-1];
-        //     if(!train.visible){
-        //         train.position.z = 30
-        //     }
-        // }
+        let r2 = Math.random();
+        if(r2<0.005){
+            let track = Math.floor(Math.random() * 3) + 1;
+            let train = this.trains[track-1];
+            if(!train.visible){
+                train.position.z = 30
+            }
+        }
         // Call update for each object obstacles
         for (const obj of this.obstacles) {
             if(obj.visible){
