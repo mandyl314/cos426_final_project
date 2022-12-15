@@ -4,3 +4,4 @@ export { default as Grass} from './grass.jpeg';
 export { default as Forest } from './forest.jpeg';
 export { default as Princeton} from './princeton.jpeg';
 export { default as Stars} from './stars.jpeg';
+export { default as BlackHole} from './black_hole.jpeg';
