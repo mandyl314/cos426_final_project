@@ -33,13 +33,13 @@ class Train extends Group {
         else if (track == 3) this.position.z = 150;
 
         this.back_offset = 10; // back of box = this.position.z + back_offset
-        this.front_offset = 13; // front of box = this.position.z - front_offset
+        this.front_offset = 13.5; // front of box = this.position.z - front_offset
         this.height_offset = 50 // can't jump of trains
         this.track = track;
     }
     update(figure){
         this.position.z -=0.1;
-        // (this,false,false);
+        figure.handleCollision(this,false,false);
     }
 }
 

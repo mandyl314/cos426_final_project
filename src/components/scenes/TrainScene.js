@@ -42,22 +42,23 @@ class TrainScene extends Scene {
 
         // Set background to a nice color
         this.background = new Color(0x000000);
+        const basicLights = new BasicLights();
+        this.add(basicLights);
+        this.obstacles =[];
+        this.trains = [];
         
 
         const train1 = new Train(1);
         const train2 = new Train(2);
         const train3 = new Train(3);
-        const basicLights = new BasicLights();
         this.add(train1,train2,train3);
-        // this.add(train1);
-        this.add(basicLights);
-        this.trains = [];
         this.trains.push(train1,train2,train3);
-        // this.trains.push(train1);
+        this.obstacles.push(train1,train2,train3);
         this.add(train1,train2,train3);
         // this.add(train1);
+        // this.trains.push(train1);
+        // this.obstacles.push(train1);
        
-
         const robot = new Robot(this);
         this.add(robot);
         this.player = robot;
@@ -67,10 +68,7 @@ class TrainScene extends Scene {
         const obstacle2 = new Obstacle(2);
         // const obstacle3 = new Obstacle(3);
         this.add( obstacle2);
-        this.obstacles =[];
         this.obstacles.push(obstacle2);
-        this.obstacles.push(train1,train2,train3);
-        // this.obstacles.push(train1);
 
         const loader = new THREE.TextureLoader();
         const planeGeometry = new THREE.PlaneGeometry( 3, 3, 1, 1 );
@@ -234,15 +232,19 @@ class TrainScene extends Scene {
     // call this when player dies
     gameOver(){
         console.log("gameOver")
-        window.dead = true;
-        this.sound.stop();
-        let sound = this.sound;
-        this.audioLoader.load( GameOverSound, function( buffer) {
+        // give time for character to be pushed
+        setTimeout(() => {
+            window.dead = true;
+            this.sound.stop();
+            let sound = this.sound;
+            this.audioLoader.load( GameOverSound, function( buffer) {
             sound.setBuffer( buffer );
             sound.setVolume( 0.5 );
             sound.play();
             sound.setLoop( false );
             });
+        }, 700)
+        
     }
 }
 
