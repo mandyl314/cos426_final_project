@@ -10,7 +10,7 @@ import { Scene, Color } from 'three'
 import * as Dat from 'dat.gui';
 import { Obstacle } from '../objects/Obstacle';
 import * as THREE from 'three';
-import { BackgroundMusic, GameOverSound } from '../sounds';
+import { BackgroundMusic, GameOverSound, HopSound, JumpSFX } from '../sounds';
 import { Track, Grass, Princeton, Stars } from '../images';
 
 class TrainScene extends Scene {
@@ -150,6 +150,13 @@ class TrainScene extends Scene {
     }
 
     move_fig(key) {
+        if (key === "ArrowUp") {
+            let sound = this.sound;
+            this.audioLoader.load(JumpSFX, function(buffer) {
+                sound.setBuffer(buffer);
+                sound.setLoop(false);
+            });
+        };
         this.player.move_fig(key, this.obstacles);
     }
 
