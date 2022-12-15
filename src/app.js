@@ -10,7 +10,7 @@ import { WebGLRenderer, PerspectiveCamera, Vector3, AxesHelper } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { TrainScene } from 'scenes';
 import * as THREE from 'three';
-import { BackgroundMusic, GameOverSound } from './components/sounds';
+import './styles.css';
 
 const camera = new PerspectiveCamera();
 // Initialize core ThreeJS components
@@ -47,7 +47,7 @@ setTimeout(() => {
     const action = mixer.clipAction(clip);
     action.play();
     action.loop = THREE.LoopRepeat;
-}, 1000);
+}, 3000);
 
 const frustrum_check = (element,camera) => {
     const offset =40;
@@ -57,8 +57,18 @@ const frustrum_check = (element,camera) => {
     return true;
 }
 
+// Set up scoreboard
+let time = 0.0;     // iniialized to be 0
+const p = document.createElement("h1");
+const node = document.createTextNode("Elapsed Time: " + time);
+p.id = "scoreboard";
+p.appendChild(node);
+document.body.append(p);
+
 // Render loop
 const onAnimationFrameHandler = (timeStamp) => {
+    time = clock.elapsedTime;
+    document.getElementById("scoreboard").textContent = "Elapsed Time: " + Math.round(time);
     controls.update();
     scene.traverse(function(element){
         element.visible = frustrum_check(element,camera);
