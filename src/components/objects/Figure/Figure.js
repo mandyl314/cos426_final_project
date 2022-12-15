@@ -73,6 +73,7 @@ class Figure extends Group{
 
     stopJump() {
         this.gravity /= -2.0;
+        console.log('hi');
     }
 
     applyGravity() {
