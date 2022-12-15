@@ -15,8 +15,8 @@ import './styles.css';
 const camera = new PerspectiveCamera();
 // Initialize core ThreeJS components
 const scene = new TrainScene(camera);
-const axes = new AxesHelper(50);
-scene.add(axes);
+// const axes = new AxesHelper(50);
+// scene.add(axes);
 const renderer = new WebGLRenderer({ antialias: true });
 
 // Set up camera
@@ -111,9 +111,9 @@ window.addEventListener("keyup", (e) => {
     if (key === 'q'){
         scene.endGame();
     }
-    if (key === 't'){
-        scene.gameOver();
-    }
+    // if (key === 't'){
+    //     scene.gameOver();
+    // }
 
     /*if (key === 'ArrowUp') {
         scene.stopJump();
@@ -139,7 +139,7 @@ const createStartingScreen = () => {
     setTimeout(() => {
         box.textContent = "Press space to start!";
         ready = true;
-    }, 4000);
+    }, 5000);
 
     // wait for starting signal
     window.addEventListener("keydown", (e) => {

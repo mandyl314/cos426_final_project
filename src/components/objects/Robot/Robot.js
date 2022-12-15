@@ -52,7 +52,7 @@ class Robot extends Group {
             switchTracks = true;
         }
 
-        if (key === "ArrowUp") {
+        if (key === "ArrowUp" && this.position.y < 1) {
             if (this.gravity > 9.8 * 50 - 1) {
                 return;
             }
@@ -125,19 +125,19 @@ class Robot extends Group {
         if (!switchTracks){
             this.rotation.x = -Math.PI / 2;
             this.position.z = obs_pos.z - obstacle.front_offset-0.5;
-            this.position.y = this.position.y+this.body_offset/2;
+            this.position.y = this.body_offset/2;
         } else if(moved_left){
             this.rotation.z = Math.PI / 2;
             this.rotation.x = -Math.PI / 2;
             this.position.x = this.position.x-half_track_width/2;
-            this.position.y = this.body_offset;
-
+            this.position.y = this.body_offset/2;
         } else{
             this.rotation.z = -Math.PI / 2;
             this.rotation.x = -Math.PI / 2;
             this.position.x = this.position.x+half_track_width/2;
-            this.position.y = this.body_offset;
+            this.position.y = this.body_offset/2;
         }
+        this.gravity=0; // prevents rotated robot sinking into ground
 
         // game over sound: need to fix
         this.scene.gameOver(this);
