@@ -184,46 +184,44 @@ class TrainScene extends Scene {
         this.player.applyGravity();
         this.player.integrate(18 / 1000);
 
-        if (!this.player.gameState) {
-            location.reload();
-        }
-
-        let r = Math.random();
-        if(r<0.003){
-            let track = Math.floor(Math.random() * 3) + 1;
-            let new_obs = new Obstacle(track);
-            this.add(new_obs);
-            this.obstacles.push(new_obs);
-        }
-        let r2 = Math.random();
-        if(r2<0.005){
-            let track = Math.floor(Math.random() * 3) + 1;
-            let train = this.trains[track-1];
-            if(!train.visible){
-                train.position.z = 30
+        if (this.player.gameState) {
+            let r = Math.random();
+            if(r<0.003){
+                let track = Math.floor(Math.random() * 3) + 1;
+                let new_obs = new Obstacle(track);
+                this.add(new_obs);
+                this.obstacles.push(new_obs);
             }
-        }
-        // Call update for each object obstacles
-        for (const obj of this.obstacles) {
-            if(obj.visible){
-                obj.update(this.player);
+            let r2 = Math.random();
+            if(r2<0.005){
+                let track = Math.floor(Math.random() * 3) + 1;
+                let train = this.trains[track-1];
+                if(!train.visible){
+                    train.position.z = 30
+                }
             }
-        }
-
-        
+            // Call update for each object obstacles
+            for (const obj of this.obstacles) {
+                if(obj.visible){
+                    obj.update(this.player);
+                }
+            }
+        }   
     }
 
     // Spacebar to start game
     startGame(){
-        console.log("startGame");
-        let sound = this.sound;
-        this.audioLoader.load( BackgroundMusic, function( buffer) {
+        if (!this.started) {
+            console.log("startGame");
+            let sound = this.sound;
+            this.audioLoader.load( BackgroundMusic, function( buffer) {
             sound.setBuffer( buffer );
             sound.setLoop( true );
             sound.setVolume( 0.5 );
             sound.play();
         });
         this.started = true;
+        }
     }
 
     // q to end game
@@ -236,6 +234,7 @@ class TrainScene extends Scene {
     // call this when player dies
     gameOver(){
         console.log("gameOver")
+        window.dead = true;
         this.sound.stop();
         let sound = this.sound;
         this.audioLoader.load( GameOverSound, function( buffer) {
