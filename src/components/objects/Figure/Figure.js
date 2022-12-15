@@ -63,6 +63,9 @@ class Figure extends Group{
         if (key === "ArrowUp") {
             //const force = new THREE.Vector3(0, 400000, 0);
             //this.netForce.addVectors(this.netForce, force);
+            if (this.gravity > 9.8 * 20 - 1) {
+                return
+            }
             this.gravity *= -2.0;
         }
         
@@ -73,6 +76,7 @@ class Figure extends Group{
 
     stopJump() {
         this.gravity /= -2.0;
+        console.log('hi');
     }
 
     applyGravity() {
@@ -103,6 +107,12 @@ class Figure extends Group{
         // floor
         if (this.position.y < 0) {
             this.position.y = 0;
+        }
+
+        console.log(this.position.y);
+
+        if (this.position.y > 3.0) {
+            this.stopJump();
         }
     }
 

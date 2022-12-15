@@ -99,6 +99,10 @@ window.addEventListener("keyup", (e) => {
     if (key === 't'){
         scene.gameOver();
     }
+
+    /*if (key === 'ArrowUp') {
+        scene.stopJump();
+    }*/
 });
 
 // move
