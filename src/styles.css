@@ -8,3 +8,22 @@ h1 {
     width: 200px;
     position: absolute;
 }
+
+.popup {
+    position: absolute;
+    padding: 1vh;
+    top: 25%;
+    left: 25%;
+    height: 7vh;
+    width: 50vw;
+    background-color: black;
+    border-color: white;
+    border-style: solid;
+    border-width: 5px;
+    border-radius: 8px;
+    text-align: center;
+    vertical-align: middle;
+    color: white;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: xx-large;
+}

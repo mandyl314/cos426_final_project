@@ -193,15 +193,17 @@ class TrainScene extends Scene {
 
     // Spacebar to start game
     startGame(){
-        console.log("startGame");
-        let sound = this.sound;
-        this.audioLoader.load( BackgroundMusic, function( buffer) {
+        if (!started) {
+            console.log("startGame");
+            let sound = this.sound;
+            this.audioLoader.load( BackgroundMusic, function( buffer) {
             sound.setBuffer( buffer );
             sound.setLoop( true );
             sound.setVolume( 0.5 );
             sound.play();
         });
         this.started = true;
+        }
     }
 
     // q to end game

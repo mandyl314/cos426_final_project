@@ -100,7 +100,7 @@ window.addEventListener('resize', windowResizeHandler, false);
 // start game
 window.addEventListener("keyup", (e) => {
     const key = e.key;
-    if (key === ' '){
+    if (ready && key === ' '){
         scene.startGame();
     }
     if (key === 'q'){
@@ -120,3 +120,32 @@ window.addEventListener("keydown", (e) => {
     const key = e.key;
     scene.move_fig(key);
 });
+
+let startScreen = false;
+let ready = false;
+const createStartingScreen = () => {
+    startScreen = true;
+    const box = document.createElement("div");
+    box.id = "starting";
+    box.classList.add("popup");
+    const node = document.createTextNode("DINKY DODGER is loading...");
+    box.appendChild(node);
+    document.body.append(box);
+    setTimeout(() => {
+        box.textContent = "Press space to start!";
+        ready = true;
+    }, 2000);
+
+    window.addEventListener("keydown", (e) => {
+        if (ready && e.key === " ") {
+            document.getElementById("starting").remove();
+            startScreen = false;
+        }
+    })
+}
+createStartingScreen();
+
+let endingScreen = false;
+const createEndingScreen = () => {
+
+}
