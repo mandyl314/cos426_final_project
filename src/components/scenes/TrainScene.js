@@ -54,7 +54,6 @@ class TrainScene extends Scene {
         this.add(train1,train2,train3);
         this.trains.push(train1,train2,train3);
         this.obstacles.push(train1,train2,train3);
-        this.add(train1,train2,train3);
         // this.add(train1);
         // this.trains.push(train1);
         // this.obstacles.push(train1);
