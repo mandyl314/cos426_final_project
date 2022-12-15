@@ -24,13 +24,17 @@ class Robot extends Group {
         this.name = 'robot';
         
         loader.load(MODEL, (gltf) => {
+            gltf.scene.scale.set(.7, .7, .7);
             this.model = gltf.scene;
             this.animations = gltf.animations;
             this.add(gltf.scene);
         });
 
         this.track = 2;     // start in the middle track
-        this.position.set(0, 0, -10);
+        this.position.set(0, 0, -8);
+
+        this.body_offset = 2/1; // front of body = this.pos.z - body_offset
+        this.height_offset = (5+.5)/2;
     }
 
     move_fig(key, obstacles) {
