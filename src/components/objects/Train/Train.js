@@ -39,7 +39,7 @@ class Train extends Group {
     }
     update(figure){
         this.position.z -=0.1;
-        // (this,false,false);
+        figure.handleCollision(this,false,false);
     }
 }
 
