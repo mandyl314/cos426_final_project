@@ -158,9 +158,9 @@ class TrainScene extends Scene {
     }
 
     update() {
-        // if (!this.player.gameState) {
-        //     location.reload();
-        // }
+        if (!this.player.gameState) {
+            location.reload();
+        }
 
         let r = Math.random();
         if(r<0.003){

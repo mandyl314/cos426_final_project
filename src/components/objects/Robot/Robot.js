@@ -118,10 +118,8 @@ class Robot extends Group {
             this.rotation.x = -Math.PI / 2;
             this.position.z = obs_pos.z - obstacle.front_offset - this.height_offset;
         } else if(moved_left){
-            this.rotation.z = Math.PI / 2;
             this.position.x = this.position.x-half_track_width
         } else{
-            this.rotation.z = -Math.PI / 2;
             this.position.x = this.position.x+half_track_width
         }
 
