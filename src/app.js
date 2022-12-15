@@ -20,7 +20,7 @@ scene.add(axes);
 const renderer = new WebGLRenderer({ antialias: true });
 
 // Set up camera
-camera.position.set(0, 20, -90);
+camera.position.set(0, 45, -90);
 camera.lookAt(new Vector3(0, 0, 0));
 
 // Set up renderer, canvas, and minor CSS adjustments
@@ -44,14 +44,10 @@ const mixer = new THREE.AnimationMixer(scene.player);
 const clock = new THREE.Clock();
 setTimeout(() => {
     const clip = THREE.AnimationClip.findByName(scene.player.animations, 'Running');
-    // console.log("Action Keyframes: ", action.tracks);
     const action = mixer.clipAction(clip);
     action.play();
-    // action.play();
     action.loop = THREE.LoopRepeat;
 }, 1000);
-// const running = THREE.AnimationClip.findByName(scene.player.animations, 'Running');
-
 
 const frustrum_check = (element,camera) => {
     const offset =40;
@@ -70,11 +66,9 @@ const onAnimationFrameHandler = (timeStamp) => {
     if (!scene.state.paused && scene.started) {
         const dt = clock.getDelta();
         mixer.update(dt);
-        console.log(mixer.time);
         renderer.render(scene, camera);
-        // scene.player.animate();
         scene.update && scene.update(timeStamp);
-    }else if(!scene.started){
+    } else if(!scene.started){
         renderer.render(scene, camera);
     }
     window.requestAnimationFrame(onAnimationFrameHandler);
