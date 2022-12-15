@@ -24,13 +24,17 @@ class Robot extends Group {
         this.name = 'robot';
         
         loader.load(MODEL, (gltf) => {
+            gltf.scene.scale.set(.7, .7, .7);
             this.model = gltf.scene;
             this.animations = gltf.animations;
             this.add(gltf.scene);
         });
 
         this.track = 2;     // start in the middle track
-        this.position.set(0, 0, -10);
+        this.position.set(0, 0, -7);
+
+        this.body_offset = 2/1; // front of body = this.pos.z - body_offset
+        this.height_offset = (5+.5)/2;
     }
 
     move_fig(key, obstacles) {
@@ -70,7 +74,6 @@ class Robot extends Group {
 
         if (this.track == obstacle.track){
             if ((obs_pos.z - front_offset<=pos.z && obs_pos.z + back_offset>=pos.z) && obs_pos.y + height_offset >= pos.y){
-                console.log("here");
                 this.death(obstacle, switchTracks,moved_left);
             }
         }
@@ -118,14 +121,22 @@ class Robot extends Group {
     death(obstacle, switchTracks, moved_left){
         let obs_pos = obstacle.position.clone()
         const EPS = .5
-        const half_track_width = 1.8+EPS;
+        const half_track_width = 1.8;
         if (!switchTracks){
             this.rotation.x = -Math.PI / 2;
-            this.position.z = obs_pos.z - obstacle.front_offset - this.height_offset;
+            this.position.z = obs_pos.z - obstacle.front_offset-0.5;
+            this.position.y = this.position.y+this.body_offset/2;
         } else if(moved_left){
-            this.position.x = this.position.x-half_track_width
+            this.rotation.z = Math.PI / 2;
+            this.rotation.x = -Math.PI / 2;
+            this.position.x = this.position.x-half_track_width/2;
+            this.position.y = this.body_offset;
+
         } else{
-            this.position.x = this.position.x+half_track_width
+            this.rotation.z = -Math.PI / 2;
+            this.rotation.x = -Math.PI / 2;
+            this.position.x = this.position.x+half_track_width/2;
+            this.position.y = this.body_offset;
         }
 
         // game over sound: need to fix
