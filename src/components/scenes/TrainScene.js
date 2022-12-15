@@ -43,15 +43,15 @@ class TrainScene extends Scene {
         this.background = new Color(0x7ec0ee);
         
 
-        // const train1 = new Train(1);
-        // const train2 = new Train(2);
-        // const train3 = new Train(3);
+        const train1 = new Train(1);
+        const train2 = new Train(2);
+        const train3 = new Train(3);
         const basicLights = new BasicLights();
-        // this.add(train1,train2,train3);
+        this.add(train1,train2,train3);
         this.add(basicLights);
         this.trains = [];
-        // this.trains.push(train1,train2,train3);
-        // this.add(train1);
+        this.trains.push(train1,train2,train3);
+        this.add(train1,train2,train3);
         // this.trains.push(train1)
 
         const player = new Figure(this);
@@ -64,7 +64,7 @@ class TrainScene extends Scene {
         this.add( obstacle1);
         this.obstacles =[];
         this.obstacles.push(obstacle1);
-        // this.obstacles.push(train1,train2,train3);
+        this.obstacles.push(train1,train2,train3);
 
         const loader = new THREE.TextureLoader();
         const planeGeometry = new THREE.PlaneGeometry( 3, 3, 1, 1 );
@@ -173,13 +173,13 @@ class TrainScene extends Scene {
             this.obstacles.push(new_obs);
         }
         let r2 = Math.random();
-        // if(r2<0.005){
-        //     let track = Math.floor(Math.random() * 3) + 1;
-        //     let train = this.trains[track-1];
-        //     if(!train.visible){
-        //         train.position.z = 30
-        //     }
-        // }
+        if(r2<0.005){
+            let track = Math.floor(Math.random() * 3) + 1;
+            let train = this.trains[track-1];
+            if(!train.visible){
+                train.position.z = 30
+            }
+        }
         // Call update for each object obstacles
         for (const obj of this.obstacles) {
             if(obj.visible){
